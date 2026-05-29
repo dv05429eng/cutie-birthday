@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Beautiful! ✨</title>
+    
+    <script>window.onerror = function() { return true; };</script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(180deg, #FFF0F5 0%, #FFE4E1 50%, #FAF0E6 100%);
+        }
+        .heading-font { font-family: 'Fredoka', sans-serif; }
+        .step-card { display: none; }
+        .step-card.active { display: block; }
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.5s; transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 1.5rem;
+        }
+        .flip-card-back { transform: rotateY(180deg); }
+        
+        .kiss-particle {
+            position: absolute; font-size: 2.8rem; bottom: 0;
+            animation: flyUp 1.5s ease-out forwards; pointer-events: none; z-index: 100;
+        }
+        @keyframes flyUp {
+            0% { transform: translateY(0) scale(0.6); opacity: 1; }
+            100% { transform: translateY(-350px) scale(1.2); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 relative overflow-x-hidden select-none">
+
+    <div id="yt-bg-player-frame" class="hidden"></div>
+
+    <main class="w-full max-w-sm bg-[#FFFDF9] rounded-[2.5rem] p-6 shadow-xl border border-pink-100/60 my-auto relative z-10">
+        
+        <div id="step-1" class="step-card active text-center">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex space-x-1.5">
+                    <span class="w-3 h-3 rounded-full bg-pink-400"></span>
+                    <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                </div>
+                <span class="text-xs font-bold text-purple-900/60 heading-font">Happy Birthday!</span>
+                <span class="text-xl">✨</span>
+            </div>
+            <h1 class="text-3xl font-bold text-[#E75480] heading-font mb-4 leading-tight">Happy Birthday, Beautiful! 🎂 ✨</h1>
+            <p class="text-gray-600 text-sm mb-6 leading-relaxed px-1">Today is all about celebrating the most amazing person in my world. I've created something magical just for you on your special day...</p>
+            <button onclick="nextStep(2)" class="w-full py-4 bg-[#EC4899] text-white font-bold text-lg rounded-2xl shadow-lg heading-font">Let's Gooo</button>
+        </div>
+
+        <div id="step-2" class="step-card text-center">
+            <h2 class="text-2xl font-bold text-[#E75480] heading-font mb-1">A Birthday Love Letter 💌</h2>
+            <p class="text-xs text-pink-400 mb-6">From my heart to the birthday queen</p>
+            <div onclick="nextStep(3)" class="cursor-pointer my-6 p-6 bg-pink-50/40 rounded-[2rem] border-2 border-dashed border-pink-200 flex flex-col items-center justify-center min-h-[200px] shadow-inner relative">
+                <div class="w-16 h-16 bg-pink-400 rounded-full flex items-center justify-center text-white text-3xl shadow-md animate-bounce">✉️</div>
+                <p class="text-xs font-bold text-pink-600 mt-5">Click to open your birthday surprise</p>
+            </div>
+        </div>
+
+        <div id="step-3" class="step-card">
+            <div class="flex items-center space-x-2 mb-4 border-b border-pink-100 pb-3">
+                <span class="text-xl">💝</span><span class="font-bold text-xs text-gray-700">To My Birthday Princess</span>
+            </div>
+            <div class="space-y-4 text-gray-600 italic text-sm leading-relaxed px-1">
+                <p class="text-[#E75480] font-bold not-italic">My dearest birthday girl,</p>
+                <p class="indent-4">Today marks another year of your incredible existence, and I couldn't be more grateful to celebrate it with you.</p>
+                <p class="indent-4">You bring so much joy, laughter, and love into this world - and into my life. 💞</p>
+            </div>
+            <button onclick="nextStep(4)" class="w-full mt-6 py-3.5 bg-[#EC4899] text-white font-bold rounded-xl text-xs heading-font">Continue It ✨</button>
+        </div>
+
+        <div id="step-4" class="step-card text-center">
+            <h2 class="text-xl font-bold text-[#E75480] heading-font mb-1">It's Cake Time! 🎂</h2>
+            <p class="text-xs text-pink-400 mb-4">Make your birthday wish come true!</p>
+            <div class="bg-amber-50/40 border border-amber-100 rounded-3xl p-4 mb-4">
+                <h3 class="font-bold text-gray-800 text-xs mb-1">Cut your birthday cake, birthday girl! 🔪</h3>
+                <div onclick="justCutTheCake()" class="cursor-pointer relative py-4 flex flex-col items-center justify-center min-h-[180px] bg-white rounded-2xl border border-dashed border-amber-200 shadow-inner">
+                    <div id="cake-uncut-layout" class="w-full flex flex-col items-center">
+                        <div class="text-4xl animate-pulse mb-1">🔥</div>
+                        <div class="text-7xl">🎂</div>
+                        <div class="absolute bottom-10 bg-yellow-100/80 border border-yellow-400 px-4 py-1 rounded-lg text-[11px] text-amber-900 font-bold animate-bounce">
+                            Tap here to cut! ✂️
+                        </div>
+                    </div>
+                    <div id="cake-cut-layout" class="hidden text-center">
+                        <div class="text-6xl mb-2">🍰✨🎉</div>
+                        <h4 class="text-sm font-bold text-pink-600 heading-font">Perfect Cut! 🥳</h4>
+                    </div>
+                </div>
+            </div>
+            <button id="cake-action-trigger" onclick="nextStep(5)" disabled class="w-full py-3.5 bg-gray-200 text-gray-400 font-bold rounded-xl cursor-not-allowed text-xs heading-font">Cut Cake First 🎂</button>
+        </div>
+
+        <div id="step-5" class="step-card text-center">
+            <h2 class="text-xl font-bold text-[#E75480] heading-font mb-4">Time to Make a Wish!</h2>
+            <div class="bg-pink-50/30 rounded-2xl p-6 mb-5 flex flex-col items-center justify-center shadow-inner">
+                <span class="text-6xl animate-bounce">🐱🎀</span>
+            </div>
+            <button onclick="nextStep(6)" class="w-full py-3.5 bg-[#EC4899] text-white font-bold rounded-xl text-xs heading-font">I've Made My Wish! 💫</button>
+        </div>
+
+        <div id="step-6" class="step-card">
+            <div class="bg-white rounded-2xl p-3 mb-4 border border-pink-100 flex flex-col space-y-2 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center text-xl">🎵</div>
+                        <div>
+                            <h4 id="audio-track-lbl" class="text-xs font-bold text-gray-800">Dil Ka Jo Haal Hai</h4>
+                            <p id="audio-status-lbl" class="text-[9px] text-pink-400">Click play to listen real song inside card...</p>
+                        </div>
+                    </div>
+                    <button id="play-trigger-btn" onclick="toggleRealYTMusic()" class="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs font-bold">▶️</button>
+                </div>
+                <div class="flex items-center space-x-2 pt-1">
+                    <span id="current-time-lbl" class="text-[9px] text-gray-400 font-mono">0:00</span>
+                    <div class="flex-1 bg-gray-100 h-2 rounded-full relative overflow-hidden">
+                        <div id="audio-fill-track" class="bg-[#EC4899] w-[0%] h-full rounded-full"></div>
+                    </div>
+                    <span id="total-time-lbl" class="text-[9px] text-gray-400 font-mono">0:00</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-4 border border-gray-100 text-center shadow-sm">
+                <div id="deck-avatar" class="w-full h-44 bg-amber-50/40 rounded-2xl mb-3 flex items-center justify-center text-6xl shadow-inner">🕷️❤️</div>
+                <h3 id="deck-title" class="font-bold text-gray-800 text-sm">Dil Ka Jo Haal Hai</h3>
+                <p id="deck-desc" class="text-[11px] text-amber-600 mt-0.5">Here's to making this year unforgettable 🌟</p>
+                <div class="flex justify-center space-x-5 mt-4">
+                    <button onclick="shiftDeckFrame(-1)" class="w-9 h-9 rounded-full bg-pink-50 text-pink-600 text-xs font-bold shadow-sm flex items-center justify-center">&lt;</button>
+                    <button onclick="shiftDeckFrame(1)" class="w-9 h-9 rounded-full bg-pink-50 text-pink-600 text-xs font-bold shadow-sm flex items-center justify-center">&gt;</button>
+                </div>
+            </div>
+            <button onclick="stopYTAudio(); nextStep(7);" class="w-full mt-4 py-3.5 bg-[#EC4899] text-white font-bold rounded-xl text-xs heading-font">Continue to Birthday Surprises ✨</button>
+        </div>
+
+        <div id="step-7" class="step-card">
+            <h2 class="text-xl font-bold text-[#E75480] heading-font text-center mb-4">Birthday Wishes Cards 🎁</h2>
+            <div class="space-y-3.5">
+                <div onclick="performCardFlip(1)" id="wish-node-1" class="flip-card w-full h-20 cursor-pointer">
+                    <div class="flip-card-inner h-full w-full">
+                        <div class="flip-card-front bg-pink-100 flex items-center justify-center text-3xl">🐱🎀</div>
+                        <div class="flip-card-back bg-white p-3 flex items-center justify-center"><p class="text-[11px] text-gray-700 text-center">Happy Birthday to the girl who makes every day feel like a celebration! 🎉💕</p></div>
+                    </div>
+                </div>
+                <div onclick="performCardFlip(2)" id="wish-node-2" class="flip-card w-full h-20 cursor-pointer">
+                    <div class="flip-card-inner h-full w-full">
+                        <div class="flip-card-front bg-teal-50 flex items-center justify-center text-3xl">🐱🙈</div>
+                        <div class="flip-card-back bg-white p-3 flex items-center justify-center"><p class="text-[11px] text-gray-700 text-center">Another year of being absolutely incredible, beautiful, and perfect! ✨</p></div>
+                    </div>
+                </div>
+                <div onclick="performCardFlip(3)" id="wish-node-3" class="flip-card w-full h-20 cursor-pointer">
+                    <div class="flip-card-inner h-full w-full">
+                        <div class="flip-card-front bg-amber-50 flex items-center justify-center text-3xl">🕷️❤️🐱</div>
+                        <div class="flip-card-back bg-white p-3 flex items-center justify-center"><p class="text-[11px] text-gray-700 text-center">May this new year bring you endless joy, love, and all your dreams! 💝</p></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="evaluateWishesUnlockedState()" class="w-full mt-5 py-3.5 bg-[#EC4899] text-white font-bold rounded-xl text-xs heading-font">Finish Wishes View 🎁</button>
+        </div>
+
+        <div id="step-8" class="step-card">
+            <h2 class="text-xl font-bold text-[#E75480] heading-font text-center mb-1">Final Birthday Letter</h2>
+            <p class="text-[11px] text-pink-400 text-center mb-4">A special message sealed with love 💕</p>
+            
+            <div class="bg-white border border-pink-100 rounded-3xl p-5 relative shadow-sm text-left">
+                <div class="flex items-center space-x-2 text-pink-500 font-bold text-xs mb-3">
+                    <span>💌</span> <span>Final Birthday Love Letter</span>
+                </div>
+                <div class="space-y-3 text-xs text-gray-700 leading-relaxed">
+                    <p class="italic text-pink-500 font-bold not-italic">My dearest birthday princess,</p>
+                    <p class="italic font-medium">May this new year bring you everything your heart desires and more joy than you can imagine.</p>
+                    <p class="text-cyan-600 font-semibold">Happy Birthday, my love. You deserve the world and so much more. 🎂✨</p>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-5 border-t border-gray-100 pt-2 text-center">Sealing will complete your birthday experience.</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3 mt-5">
+                <button onclick="nextStep(9)" class="py-3.5 bg-pink-400 text-white font-bold rounded-xl text-xs heading-font shadow">Seal The Letter 🎂</button>
+                <button onclick="nextStep(1)" class="py-3.5 bg-emerald-400 text-white font-bold rounded-xl text-xs heading-font shadow">Experience Again</button>
+            </div>
+        </div>
+
+        <div id="step-9" class="step-card text-center relative">
+            <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">💝</div>
+            <h2 class="text-xl font-bold text-[#E75480] heading-font mb-1">Birthday Letter Sealed with Love</h2>
+            <p class="text-xs text-gray-500 font-medium">Happy Birthday, My Everything 🎉</p>
+            
+            <div class="flex justify-center space-x-1 text-pink-300 text-xs my-4">
+                <span>♡</span><span>♡</span><span>♡</span><span>♡</span><span>♡</span><span>♡</span><span>♡</span>
+            </div>
+
+            <h3 class="text-base font-bold text-pink-600 heading-font">Forever Yours, Happy Birthday! 💕🎂</h3>
+            <p class="text-[11px] text-gray-400 font-mono mt-1">Friday, May 29, 2026</p>
+
+            <div class="space-y-3 mt-7">
+                <button onclick="nextStep(1)" class="w-full py-3.5 bg-[#EC4899] text-white font-bold rounded-xl text-xs heading-font shadow">Experience Birthday Magic Again ✨</button>
+                <button onclick="launchKissesParticleShower()" class="w-full py-3.5 bg-emerald-400 text-white font-bold rounded-xl text-xs heading-font">Send Birthday Kisses 💋</button>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="congrats-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] p-6 text-center max-w-xs w-full shadow-2xl">
+            <h3 class="text-xl font-bold text-[#E75480] heading-font">All Birthday Wishes Unlocked!</h3>
+            <button onclick="document.getElementById('congrats-modal').classList.add('hidden'); nextStep(8);" class="w-full mt-4 py-3.5 bg-[#EC4899] text-white font-bold rounded-xl text-xs heading-font">Open Final Birthday Letter ✉️</button>
+        </div>
+    </div>
+
+    <script>
+        let ytPlayer = null;
+        let activeDeckIdx = 0;
+        let progressInterval = null;
+
+        // 🛠️ REAL ASLI SONGS & TIMINGS DIRECT YT CONFIGURATION (In Seconds)
+        const deckCollection = [
+            { title: "Dil Ka Jo Haal Hai", desc: "Here's to making this year unforgettable 🌟", avatar: "🕷️❤️🐱", id: "udgrClXV26Y", start: 45 }, 
+            { title: "Dil Cheeze Tujhe Dedi", desc: "Because today is all about YOU, queen! 👑", avatar: "🛗🕷️🎀", id: "S0Z7gZqre1g", start: 20 },
+            { title: "If the world was ending...", desc: "Every beat celebrates your beautiful heart 💖", avatar: "👾💘✨", id: "1jO2Anu8y_I", start: 60 }
+        ];
+
+        // Core YouTube API Callback Initialization
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-bg-player-frame', {
+                height: '0', width: '0',
+                videoId: deckCollection[activeDeckIdx].id,
+                playerVars: { 'autoplay': 0, 'controls': 0, 'start': deckCollection[activeDeckIdx].start }
+            });
+        }
+
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+        }
+
+        function justCutTheCake() {
+            document.getElementById('cake-uncut-layout').classList.add('hidden');
+            document.getElementById('cake-cut-layout').classList.remove('hidden');
+            const btn = document.getElementById('cake-action-trigger');
+            btn.disabled = false;
+            btn.className = "w-full py-3.5 bg-[#EC4899] text-white font-bold rounded-xl text-xs heading-font shadow-md";
+            btn.innerText = "Continue It ✨";
+        }
+
+        // 🎵 REAL BACKGROUND AUDIO CONTROLS VIA YOUTUBE MODULATION
+        function toggleRealYTMusic() {
+            const btn = document.getElementById('play-trigger-btn');
+            if (!ytPlayer) return alert("Songs player engine initializing, wait 2 seconds!");
+
+            const state = ytPlayer.getPlayerState();
+            if (state !== 1) { // 1 means playing
+                ytPlayer.playVideo();
+                btn.innerText = "⏸️";
+                document.getElementById('audio-status-lbl').innerText = "Playing real track in background... 💕";
+                startProgressTracker();
+            } else {
+                ytPlayer.pauseVideo();
+                btn.innerText = "▶️";
+                clearInterval(progressInterval);
+            }
+        }
+
+        function shiftDeckFrame(step) {
+            activeDeckIdx = (activeDeckIdx + step + deckCollection.length) % deckCollection.length;
+            document.getElementById('audio-track-lbl').innerText = deckCollection[activeDeckIdx].title;
+            document.getElementById('deck-title').innerText = deckCollection[activeDeckIdx].title;
+            document.getElementById('deck-desc').innerText = deckCollection[activeDeckIdx].desc;
+            document.getElementById('deck-avatar').innerText = deckCollection[activeDeckIdx].avatar;
+            
+            if (ytPlayer) {
+                clearInterval(progressInterval);
+                const btn = document.getElementById('play-trigger-btn');
+                
+                // Load and cue next specific YouTube URL stream safely
+                ytPlayer.cueVideoById({
+                    videoId: deckCollection[activeDeckIdx].id,
+                    startSeconds: deckCollection[activeDeckIdx].start
+                });
+                
+                btn.innerText = "▶️";
+                document.getElementById('audio-status-lbl').innerText = "Click play to listen real song inside card...";
+                document.getElementById('audio-fill-track').style.width = '0%';
+                document.getElementById('current-time-lbl').innerText = "0:00";
+            }
+        }
+
+        function startProgressTracker() {
+            clearInterval(progressInterval);
+            progressInterval = setInterval(() => {
+                if (ytPlayer && ytPlayer.getDuration) {
+                    const cur = ytPlayer.getCurrentTime();
+                    const dur = ytPlayer.getDuration();
+                    const pct = (cur / dur) * 100;
+                    
+                    document.getElementById('audio-fill-track').style.width = pct + '%';
+                    document.getElementById('current-time-lbl').innerText = formatAudioTimeStr(cur);
+                    document.getElementById('total-time-lbl').innerText = formatAudioTimeStr(dur);
+                }
+            }, 500);
+        }
+
+        function stopYTAudio() {
+            if(ytPlayer) { ytPlayer.pauseVideo(); clearInterval(progressInterval); }
+        }
+
+        function formatAudioTimeStr(secs) {
+            const m = Math.floor(secs / 60); const s = Math.floor(secs % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        const verifiedCardsMap = { 1: false, 2: false, 3: false };
+        function performCardFlip(index) {
+            document.getElementById(`wish-node-${index}`).classList.toggle('flipped');
+            verifiedCardsMap[index] = true;
+        }
+
+        function evaluateWishesUnlockedState() {
+            if(verifiedCardsMap[1] && verifiedCardsMap[2] && verifiedCardsMap[3]) {
+                document.getElementById('congrats-modal').classList.remove('hidden');
+            } else { alert("Tap and read all 3 wishes cards first! 🎁"); }
+        }
+
+        function launchKissesParticleShower() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div'); p.className = 'kiss-particle'; p.innerText = '💋';
+                    p.style.left = Math.random() * 85 + '%'; document.body.appendChild(p);
+                    setTimeout(() => p.remove(), 1500);
+                }, i * 90);
+            }
+        }
+    </script>
+</body>
+</html>
